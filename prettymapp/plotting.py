@@ -1,3 +1,4 @@
+# >>> Streamlit inports
 from pathlib import Path
 import colorsys
 from typing import Tuple, List
@@ -53,6 +54,7 @@ class Plot:
     bg_buffer: int = 2
     bg_color: str = "#F2F4CB"
 
+# >>> Funtions for Streamlit
     def __post_init__(self):
         (
             self.xmin,

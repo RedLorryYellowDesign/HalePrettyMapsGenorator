@@ -1,5 +1,5 @@
 import copy
-
+import utils
 import streamlit as st
 import numpy as np
 
@@ -14,10 +14,13 @@ from prettymapp.geo import GeoCodingError, get_aoi
 from prettymapp.settings import STYLES
 
 st.set_page_config(
-    page_title="prettymapp", page_icon="🖼️", initial_sidebar_state="collapsed"
+    page_title="Hale-SiteMap-Generator", page_icon="🖼️", initial_sidebar_state="collapsed", layout="wide"
 )
-st.markdown("# Prettymapp")
 
+st.title("Hale-SiteMap-Genorator")
+st.markdown("""This is a tool to generate a sitemap for Hale.""")
+st.text("""
+    This app generates a site map for the Hale site. It is based on the [prettymapp]""")
 
 if not st.session_state:
     st.session_state.update(EXAMPLES["Macau"])
