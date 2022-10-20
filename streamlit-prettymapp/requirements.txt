@@ -3,7 +3,7 @@ streamlit
 #../prettymapp
 osmnx==1.2.2
 folium==0.12.1
-prettymapp
+git+https://github.com/chrieke/prettymapp.git
 # geopandas
 # geopy
 # geocoder
