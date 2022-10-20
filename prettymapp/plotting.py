@@ -41,7 +41,7 @@ class Plot:
     ]  # Not df bounds as could lead to weird plot shapes with unequal geometry distribution.
     draw_settings: dict
     shape: str = "circle"
-    contour_width: int = 0
+    contour_width: int = 1
     contour_color: str = "#2F3537"
     name_on: bool = False
     name: str = "some name"

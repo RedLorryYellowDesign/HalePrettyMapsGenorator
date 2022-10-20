@@ -17,19 +17,20 @@ st.set_page_config(
     page_title="Hale-SiteMap-Generator", page_icon="🖼️", initial_sidebar_state="collapsed", layout="wide"
 )
 
+
+# >>> Title and description of the app
 st.title("Hale-SiteMap-Genorator")
 st.markdown("""This is a tool to generate a sitemap for Hale.""")
-st.text("""
-    This app generates a site map for the Hale site. It is based on the [prettymapp]""")
+st.text("""This app generates a site map for the Hale site. It is based on the [prettymapp]""")
 
-
+# >>> OpenStreetMap Link
+st.markdown("""Please use [OpenStreetMap](https://www.openstreetmap.org/)""")
 # https://www.openstreetmap.org/#map=17/51.54290/-0.28560
 
 
 
 if not st.session_state:
     st.session_state.update(EXAMPLES["Macau"])
-
     lc_class_colors = get_colors_from_style("Peach")
     st.session_state.lc_classes = list(lc_class_colors.keys())
     st.session_state.update(lc_class_colors)
