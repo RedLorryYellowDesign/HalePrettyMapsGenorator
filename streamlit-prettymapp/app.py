@@ -22,6 +22,11 @@ st.markdown("""This is a tool to generate a sitemap for Hale.""")
 st.text("""
     This app generates a site map for the Hale site. It is based on the [prettymapp]""")
 
+
+# https://www.openstreetmap.org/#map=17/51.54290/-0.28560
+
+
+
 if not st.session_state:
     st.session_state.update(EXAMPLES["Macau"])
 
