@@ -19,17 +19,18 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 st.set_page_config(
-    page_title="Hale-SiteMap-Generator", page_icon="🖼️", initial_sidebar_state="collapsed", layout="wide"
-)
+    page_title="AutoMap",
+    page_icon="🖼️",
+    initial_sidebar_state="collapsed",
+    layout="wide")
 
-st.title("Hale-SiteMap-Genorator")
+st.title("AutoMap")
 st.markdown("""This is a tool to generate a sitemap for Hale.""")
 st.text("""
     This app generates a site map for the Hale site. It is based on the [prettymapp]""")
 
 if not st.session_state:
     st.session_state.update(EXAMPLES["Macau"])
-
     lc_class_colors = get_colors_from_style("Peach")
     st.session_state.lc_classes = list(lc_class_colors.keys())
     st.session_state.update(lc_class_colors)
@@ -38,9 +39,7 @@ if not st.session_state:
 
 image_button_config()
 
-example_buttons = [
-    column.button(name) for name, column in zip(EXAMPLES.keys(), st.columns(4))
-]
+example_buttons = [column.button(name) for name, column in zip(EXAMPLES.keys(), st.columns(6))]
 selected_example = None
 if any(example_buttons):
     # Set settings for new example
