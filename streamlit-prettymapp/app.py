@@ -1,3 +1,4 @@
+from cProfile import label
 import copy
 import utils
 import streamlit as st
@@ -14,8 +15,13 @@ from prettymapp.geo import GeoCodingError, get_aoi
 from prettymapp.settings import STYLES
 
 st.set_page_config(
-    page_title="Hale-SiteMap-Generator", page_icon="🖼️", initial_sidebar_state="collapsed", layout="wide"
+    page_title="Hale-SiteMap-Generator", page_icon="🖼️", initial_sidebar_state="expanded"
 )
+
+st.sidebar.title("Hale")
+
+
+
 
 
 # >>> Title and description of the app
@@ -25,9 +31,13 @@ st.text("""This app generates a site map for the Hale site. It is based on the [
 
 # >>> OpenStreetMap Link
 st.markdown("""Please use [OpenStreetMap](https://www.openstreetmap.org/)""")
+
 # https://www.openstreetmap.org/#map=17/51.54290/-0.28560
 
-
+# Colour picker
+# st.color_picker(label, value=None, key=None, help=None, on_change=None, args=None, kwargs=None, *, disabled=False, label_visibility="visible")
+# Text Input Box
+# st.text_input(label, value="", max_chars=None, key=None, type="default", help=None, autocomplete=None, on_change=None, args=None, kwargs=None, *, placeholder=None, disabled=False, label_visibility="visible")
 
 if not st.session_state:
     st.session_state.update(EXAMPLES["Macau"])
@@ -191,8 +201,16 @@ with st.spinner("Creating map... (may take up to a minute)"):
         bg_color=bg_color,
     )
 
+st.slider(
+    "dpi",
+    100,
+    1500,
+    key="radius",
+)
     # result_container.write(html, unsafe_allow_html=True)
-    st.pyplot(fig, pad_inches=0, bbox_inches="tight", transparent=True, dpi=300)
+
+st.pyplot(fig, pad_inches=0, bbox_inches="tight", transparent=True, dpi=300)
+
 
 # svg_string = plt_to_svg(fig)
 # html = svg_to_html(svg_string)
@@ -209,11 +227,6 @@ with st.spinner("Creating map... (may take up to a minute)"):
 # st.download_button(label="Download image", data=data, file_name=f"{fname}.{img_format}")
 
 st.markdown("---")
-st.write(
-    "Share on social media with the hashtag [#prettymaps](https://twitter.com/search?q=%23prettymaps&src=typed_query) !"
-)
-st.markdown(
-    "More infos and :star: at [github.com/chrieke/prettymapp](https://github.com/chrieke/prettymapp)"
-)
+
 
 st.session_state["previous_style"] = style

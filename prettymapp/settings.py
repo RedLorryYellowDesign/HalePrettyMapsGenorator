@@ -1,3 +1,6 @@
+"""
+Grouping all settings
+"""
 LC_SETTINGS = {
     "urban": {"building": True, "landuse": ["construction", "commercial"]},
     "water": {
@@ -29,7 +32,6 @@ LC_SETTINGS = {
     },
     "other": {"amenity": ["parking"], "man_made": ["pier"], "highway": ["pedestrian"]},
 }
-
 # Macau peach
 # Barcelona auburn
 STYLES = {
@@ -160,7 +162,6 @@ STYLES = {
         "other": {"fc": "#F2F4CB", "ec": "#2F3737", "lw": 1, "zorder": 3},
     },
 }
-
 
 STREETS_WIDTH = {
     "motorway": 4,
