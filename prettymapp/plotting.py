@@ -41,7 +41,7 @@ class Plot:
     ]  # Not df bounds as could lead to weird plot shapes with unequal geometry distribution.
     draw_settings: dict
     shape: str = "circle"
-    contour_width: int = 1
+    contour_width: int = 0
     contour_color: str = "#2F3537"
     name_on: bool = False
     name: str = "some name"
@@ -208,13 +208,12 @@ class Plot:
         # re-enable patch for background color that is deactivated with axis
         self.ax.patch.set_zorder(-1)
 
-# ---| Title plotting |---
     def set_name(self):
         x = self.xmid + self.text_x / 100 * self.xdif
         y = self.ymid + self.text_y / 100 * self.ydif
 
         _location_ = Path(__file__).resolve().parent
-        fpath = _location_ / "Architects Draft Bold.ttf"
+        fpath = _location_ / "fonts/PermanentMarker-Regular.ttf"
         fontproperties = fm.FontProperties(fname=fpath.resolve())
         self.ax.text(
             x=x,
@@ -227,14 +226,14 @@ class Plot:
             fontproperties=fontproperties,
             size=self.font_size,
         )
-# # >>> Credit
-#     def set_credits(self, add_package_credit=True):
-#         credit_text = "© OpenStreetMap"
-#         package_credit_text = "\n prettymapp | prettymaps"
-#         if add_package_credit:
-#             credit_text = credit_text + package_credit_text
 
-#         x = self.xmin + 0.87 * self.xdif
-#         y = self.ymin - 0.70 * self.bg_buffer_y
-#         text = self.ax.text(x=x, y=y, s=credit_text, c="w", fontsize=9, zorder=6)
-#         text.set_path_effects([PathEffects.withStroke(linewidth=3, foreground="black")])
+    def set_credits(self, add_package_credit=True):
+        credit_text = "© OpenStreetMap"
+        package_credit_text = "\n prettymapp | prettymaps"
+        if add_package_credit:
+            credit_text = credit_text + package_credit_text
+
+        x = self.xmin + 0.87 * self.xdif
+        y = self.ymin - 0.70 * self.bg_buffer_y
+        text = self.ax.text(x=x, y=y, s=credit_text, c="w", fontsize=9, zorder=6)
+        text.set_path_effects([PathEffects.withStroke(linewidth=3, foreground="black")])

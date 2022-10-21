@@ -1,4 +1,3 @@
-from cProfile import label
 import copy
 import utils
 import streamlit as st
@@ -15,32 +14,17 @@ from prettymapp.geo import GeoCodingError, get_aoi
 from prettymapp.settings import STYLES
 
 st.set_page_config(
-    page_title="Hale-SiteMap-Generator", page_icon="🖼️", initial_sidebar_state="expanded"
+    page_title="Hale-SiteMap-Generator", page_icon="🖼️", initial_sidebar_state="collapsed", layout="wide"
 )
 
-st.sidebar.title("Hale")
-
-
-
-
-
-# >>> Title and description of the app
 st.title("Hale-SiteMap-Genorator")
 st.markdown("""This is a tool to generate a sitemap for Hale.""")
-st.text("""This app generates a site map for the Hale site. It is based on the [prettymapp]""")
-
-# >>> OpenStreetMap Link
-st.markdown("""Please use [OpenStreetMap](https://www.openstreetmap.org/)""")
-
-# https://www.openstreetmap.org/#map=17/51.54290/-0.28560
-
-# Colour picker
-# st.color_picker(label, value=None, key=None, help=None, on_change=None, args=None, kwargs=None, *, disabled=False, label_visibility="visible")
-# Text Input Box
-# st.text_input(label, value="", max_chars=None, key=None, type="default", help=None, autocomplete=None, on_change=None, args=None, kwargs=None, *, placeholder=None, disabled=False, label_visibility="visible")
+st.text("""
+    This app generates a site map for the Hale site. It is based on the [prettymapp]""")
 
 if not st.session_state:
     st.session_state.update(EXAMPLES["Macau"])
+
     lc_class_colors = get_colors_from_style("Peach")
     st.session_state.lc_classes = list(lc_class_colors.keys())
     st.session_state.update(lc_class_colors)
@@ -201,17 +185,8 @@ with st.spinner("Creating map... (may take up to a minute)"):
         bg_color=bg_color,
     )
 
-# st.slider(
-#     "dpi",
-#     100,
-#     600,
-#     key="Resolution",
-#     step=50
-# )
-#     # result_container.write(html, unsafe_allow_html=True)
-
-st.pyplot(fig, pad_inches=0, bbox_inches="tight", transparent=True, dpi=300)
-
+    # result_container.write(html, unsafe_allow_html=True)
+    st.pyplot(fig, pad_inches=0, bbox_inches="tight", transparent=True, dpi=300)
 
 # svg_string = plt_to_svg(fig)
 # html = svg_to_html(svg_string)
@@ -228,6 +203,11 @@ st.pyplot(fig, pad_inches=0, bbox_inches="tight", transparent=True, dpi=300)
 # st.download_button(label="Download image", data=data, file_name=f"{fname}.{img_format}")
 
 st.markdown("---")
-
+st.write(
+    "Share on social media with the hashtag [#prettymaps](https://twitter.com/search?q=%23prettymaps&src=typed_query) !"
+)
+st.markdown(
+    "More infos and :star: at [github.com/chrieke/prettymapp](https://github.com/chrieke/prettymapp)"
+)
 
 st.session_state["previous_style"] = style

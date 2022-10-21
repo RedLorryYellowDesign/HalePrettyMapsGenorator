@@ -94,23 +94,5 @@ EXAMPLES = {
         "bg_buffer": 2,
         "bg_color": "#F2F4CB",
     },
-    "Hale Standard": {
-        "address": "22, Leathermarket Street, Bermondsey Village, Borough, London Borough of Southwark, London, Greater London, England, SE1 3FB, United Kingdom",
-        "custom_title": "Hale Architecture, London",
-        "radius": 250,
-        "style": "Peach",
-        "shape": "rectangle",
-        "contour_width": 2,
-        "contour_color": "#000000",
-        "image": "Hale_Standard.png",
-        "name_on": True,
-        "font_size": 20,
-        "font_color": "#2F3737",
-        "text_x": 19,
-        "text_y": 0,
-        "text_rotation": -24,
-        "bg_shape": "rectangle",  # background
-        "bg_buffer": 2,
-        "bg_color": "#F2F4CB",
-    },
-    "Erbil": "erbil.png",}
+    "Erbil": "erbil.png",
+}
