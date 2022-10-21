@@ -204,8 +204,9 @@ with st.spinner("Creating map... (may take up to a minute)"):
 st.slider(
     "dpi",
     100,
-    1500,
+    600,
     key="Resolution",
+    step=50
 )
     # result_container.write(html, unsafe_allow_html=True)
 
