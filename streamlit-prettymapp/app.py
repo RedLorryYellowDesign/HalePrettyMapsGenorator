@@ -1,4 +1,5 @@
 import copy
+from xmlrpc.client import boolean
 import utils
 import streamlit as st
 import numpy as np
@@ -12,6 +13,10 @@ from utils import (
 )
 from prettymapp.geo import GeoCodingError, get_aoi
 from prettymapp.settings import STYLES
+
+
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
 st.set_page_config(
     page_title="Hale-SiteMap-Generator", page_icon="🖼️", initial_sidebar_state="collapsed", layout="wide"
@@ -185,8 +190,10 @@ with st.spinner("Creating map... (may take up to a minute)"):
         bg_color=bg_color,
     )
 
-    # result_container.write(html, unsafe_allow_html=True)
-    st.pyplot(fig, pad_inches=0, bbox_inches="tight", transparent=True, dpi=300)
+    if st.button('Plot Map'):
+        st.pyplot(fig, pad_inches=0, bbox_inches="tight", transparent=True, dpi=300)
+    else:
+        st.write('Goodbye')
 
 # svg_string = plt_to_svg(fig)
 # html = svg_to_html(svg_string)
@@ -201,13 +208,5 @@ with st.spinner("Creating map... (may take up to a minute)"):
 #     data = io.BytesIO()
 #     fig.savefig(data, pad_inches=0, bbox_inches="tight", transparent=True)
 # st.download_button(label="Download image", data=data, file_name=f"{fname}.{img_format}")
-
-st.markdown("---")
-st.write(
-    "Share on social media with the hashtag [#prettymaps](https://twitter.com/search?q=%23prettymaps&src=typed_query) !"
-)
-st.markdown(
-    "More infos and :star: at [github.com/chrieke/prettymapp](https://github.com/chrieke/prettymapp)"
-)
 
 st.session_state["previous_style"] = style
