@@ -205,7 +205,7 @@ st.slider(
     "dpi",
     100,
     1500,
-    key="radius",
+    key="Resolution",
 )
     # result_container.write(html, unsafe_allow_html=True)
 
