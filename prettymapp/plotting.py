@@ -227,13 +227,32 @@ class Plot:
             size=self.font_size,
         )
 
-    def set_credits(self, add_package_credit=True):
-        credit_text = "© OpenStreetMap"
-        package_credit_text = "\n prettymapp | prettymaps"
-        if add_package_credit:
-            credit_text = credit_text + package_credit_text
+    def ScaleBar(self):
+        x = self.xmid + self.text_x / 100 * self.xdif
+        y = self.ymid + self.text_y / 100 * self.ydif
 
-        x = self.xmin + 0.87 * self.xdif
-        y = self.ymin - 0.70 * self.bg_buffer_y
-        text = self.ax.text(x=x, y=y, s=credit_text, c="w", fontsize=9, zorder=6)
-        text.set_path_effects([PathEffects.withStroke(linewidth=3, foreground="black")])
+        _location_ = Path(__file__).resolve().parent
+        fpath = _location_ / "fonts/PermanentMarker-Regular.ttf"
+        fontproperties = fm.FontProperties(fname=fpath.resolve())
+        self.ax.text(
+            x=x,
+            y=y,
+            s=self.name,
+            color=self.font_color,
+            zorder=6,
+            ha="center",
+            rotation=self.text_rotation * -1,
+            fontproperties=fontproperties,
+            size=self.font_size,
+        )
+
+    # def set_credits(self, add_package_credit=True):
+    #     credit_text = "© OpenStreetMap"
+    #     package_credit_text = "\n prettymapp | prettymaps"
+    #     if add_package_credit:
+    #         credit_text = credit_text + package_credit_text
+
+    #     x = self.xmin + 0.87 * self.xdif
+    #     y = self.ymin - 0.70 * self.bg_buffer_y
+    #     text = self.ax.text(x=x, y=y, s=credit_text, c="w", fontsize=9, zorder=6)
+    #     text.set_path_effects([PathEffects.withStroke(linewidth=3, foreground="black")]

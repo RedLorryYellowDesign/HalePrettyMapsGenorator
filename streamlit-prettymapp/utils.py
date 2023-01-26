@@ -12,6 +12,11 @@ from prettymapp.plotting import Plot
 from prettymapp.osm import get_osm_geometries
 from prettymapp.settings import STYLES
 
+from pvlib import solarposition
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 @st.experimental_memo(show_spinner=False)
 def st_get_osm_geometries(aoi):
@@ -90,7 +95,7 @@ def slugify(value: Any, allow_unicode: bool = False):
     value = re.sub(r"[^\w\s-]", "", value.lower())
     return re.sub(r"[-\s]+", "-", value).strip("-_")
 
-
+# makes the image button and allows for auto fill of settings 
 def image_button_config():
     """
     Hack for streamlit custom button with image.
@@ -157,3 +162,46 @@ def image_button_config():
 		""",
         unsafe_allow_html=True,
     )
+
+
+
+# def SunPath():
+#     tz = 'Asia/Calcutta'
+#     lat, lon = 28.6, 77.2
+
+#     times = pd.date_range('2019-01-01 00:00:00', '2020-01-01', closed='left',
+#                         freq='H', tz=tz)
+#     solpos = solarposition.get_solarposition(times, lat, lon)
+#     # remove nighttime
+#     solpos = solpos.loc[solpos['apparent_elevation'] > 0, :]
+
+#     ax = plt.subplot(1, 1, 1, projection='polar')
+#     # draw the analemma loops
+#     points = ax.scatter(np.radians(solpos.azimuth), solpos.apparent_zenith,
+#                         s=2, label=None, c=solpos.index.dayofyear)
+#     ax.figure.colorbar(points)
+
+#     # draw hour labels
+#     for hour in np.unique(solpos.index.hour):
+#         # choose label position by the smallest radius for each hour
+#         subset = solpos.loc[solpos.index.hour == hour, :]
+#         r = subset.apparent_zenith
+#         pos = solpos.loc[r.idxmin(), :]
+#         ax.text(np.radians(pos['azimuth']), pos['apparent_zenith'], str(hour))
+
+#     # draw individual days
+#     for date in pd.to_datetime(['2019-03-21', '2019-06-21', '2019-12-21']):
+#         times = pd.date_range(date, date+pd.Timedelta('24h'), freq='5min', tz=tz)
+#         solpos = solarposition.get_solarposition(times, lat, lon)
+#         solpos = solpos.loc[solpos['apparent_elevation'] > 0, :]
+#         label = date.strftime('%Y-%m-%d')
+#         ax.plot(np.radians(solpos.azimuth), solpos.apparent_zenith, label=label)
+
+#     ax.figure.legend(loc='upper left')
+
+#     # change coordinates to be like a compass
+#     ax.set_theta_zero_location('N')
+#     ax.set_theta_direction(-1)
+#     ax.set_rmax(90)
+
+#     plt.show()

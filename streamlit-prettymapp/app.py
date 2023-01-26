@@ -1,5 +1,7 @@
+# ---| IMPORTS |---
 import copy
 from xmlrpc.client import boolean
+from prettymapp.plotting import Plot
 import utils
 import streamlit as st
 import numpy as np
@@ -13,33 +15,32 @@ from utils import (
 )
 from prettymapp.geo import GeoCodingError, get_aoi
 from prettymapp.settings import STYLES
-
-
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-
+from pvlib import solarposition
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+# ---| PAGE SETUP |---
 st.set_page_config(
     page_title="AutoMap",
     page_icon="🖼️",
     initial_sidebar_state="collapsed",
     layout="wide")
-
 st.title("AutoMap")
 st.markdown("""This is a tool to generate a sitemap for Hale.""")
-st.text("""
-    This app generates a site map for the Hale site. It is based on the [prettymapp]""")
-
+st.text("""This app generates a site map for the Hale site. It is based on the [prettymapp]""")
+st.image("Images/gd-0002.png")
+# ---| DEFULT PRINT SETTINGS |---
 if not st.session_state:
     st.session_state.update(EXAMPLES["Macau"])
     lc_class_colors = get_colors_from_style("Peach")
     st.session_state.lc_classes = list(lc_class_colors.keys())
     st.session_state.update(lc_class_colors)
     st.session_state["previous_style"] = "Peach"
-
-
-image_button_config()
-
-example_buttons = [column.button(name) for name, column in zip(EXAMPLES.keys(), st.columns(6))]
+# ---| EXSAMPLE IMAGES |---
+image_button_config() # set image button config
+example_buttons = [column.button(name) for name, column in zip(EXAMPLES.keys(), st.columns(5))]
 selected_example = None
 if any(example_buttons):
     # Set settings for new example
@@ -59,6 +60,7 @@ radius = col2.slider(
     "Radius",
     100,
     1500,
+    steps=50,
     key="radius",
 )
 
@@ -67,23 +69,21 @@ style = col3.selectbox(
     options=list(STYLES.keys()),
     key="style",
 )
-
+# ---| FORM SUBMIT / ADVANCED SETTINGS|---
 expander = form.expander("Customize map style")
 col1style, col2style, _, col3style = expander.columns([2, 2, 0.1, 1])
-
 shape_options = ["circle", "rectangle"]
 shape = col1style.radio(
     "Map Shape",
     options=shape_options,
     key="shape",
-)
-
+    )
 bg_shape_options = ["rectangle", "circle", None]
 bg_shape = col1style.radio(
     "Background Shape",
     options=bg_shape_options,
     key="bg_shape",
-)
+    )
 bg_color = col1style.color_picker(
     "Background Color",
     key="bg_color",
@@ -147,7 +147,6 @@ text_rotation = col2style.slider(
     90,
     key="text_rotation",
 )
-
 if style != st.session_state["previous_style"]:
     st.session_state.update(get_colors_from_style(style))
 draw_settings = copy.deepcopy(STYLES[style])
@@ -160,6 +159,7 @@ for lc_class in st.session_state.lc_classes:
         draw_settings[lc_class]["fc"] = picked_color
 
 form.form_submit_button(label="Submit")
+st.form_submit_button(label="Submit")
 
 result_container = st.empty()
 with st.spinner("Creating map... (may take up to a minute)"):
@@ -187,6 +187,7 @@ with st.spinner("Creating map... (may take up to a minute)"):
         bg_shape=bg_shape,
         bg_buffer=bg_buffer,
         bg_color=bg_color,
+        #ScaleBar=ScaleBar
     )
 
     if st.button('Plot Map'):
@@ -194,7 +195,58 @@ with st.spinner("Creating map... (may take up to a minute)"):
     else:
         st.write('Goodbye')
 
-# svg_string = plt_to_svg(fig)
+tz = 'Asia/Calcutta'
+lat, lon = 28.6, 77.2
+
+times = pd.date_range('2019-01-01 00:00:00', '2020-01-01', closed='left',freq='H', tz=tz)
+solpos = solarposition.get_solarposition(times, lat, lon)
+# remove nighttime
+solpos = solpos.loc[solpos['apparent_elevation'] > 0, :]
+
+ax = plt.subplot(1, 1, 1, projection='polar')
+    # draw the analemma loops
+points = ax.scatter(np.radians(solpos.azimuth), solpos.apparent_zenith,
+                        s=2, label=None, c=solpos.index.dayofyear)
+ax.figure.colorbar(points)
+
+# draw hour labels
+for hour in np.unique(solpos.index.hour):
+        # choose label position by the smallest radius for each hour
+        subset = solpos.loc[solpos.index.hour == hour, :]
+        r = subset.apparent_zenith
+        pos = solpos.loc[r.idxmin(), :]
+        ax.text(np.radians(pos['azimuth']), pos['apparent_zenith'], str(hour))
+
+    # draw individual days
+for date in pd.to_datetime(['2019-03-21', '2019-06-21', '2019-12-21']):
+        times = pd.date_range(date, date+pd.Timedelta('24h'), freq='5min', tz=tz)
+        solpos = solarposition.get_solarposition(times, lat, lon)
+        solpos = solpos.loc[solpos['apparent_elevation'] > 0, :]
+        label = date.strftime('%Y-%m-%d')
+        ax.plot(np.radians(solpos.azimuth), solpos.apparent_zenith, label=label)
+
+ax.figure.legend(loc='upper left')
+
+    # change coordinates to be like a compass
+ax.set_theta_zero_location('N')
+ax.set_theta_direction(-1)
+ax.set_rmax(90)
+
+plt.show()
+
+
+
+if st.button('Plot sun path'):
+    st.pyplot()
+
+
+else:
+        st.write('Goodbye')
+
+# -------------------------------
+
+# svg_str
+# ing = plt_to_svg(fig)
 # html = svg_to_html(svg_string)
 # st.write("")
 # fname = slugify(address)
